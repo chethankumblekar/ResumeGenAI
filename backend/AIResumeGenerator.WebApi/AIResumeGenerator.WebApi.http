@@ -1,0 +1,6 @@
+@AIResumeGeneratorBackend_HostAddress = http://localhost:5051
+
+GET {{AIResumeGeneratorBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
