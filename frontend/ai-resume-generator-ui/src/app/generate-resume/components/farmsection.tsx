@@ -5,8 +5,9 @@ type FormSectionProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
-  type?: string; // Added type prop for more flexibility (default is text)
-  required?: boolean; // Optional: Flag to mark fields as required
+  type?: string;
+  required?: boolean;
+  error?: string; 
 };
 
 const FormSection = ({
@@ -14,19 +15,21 @@ const FormSection = ({
   value,
   onChange,
   placeholder,
-  type = "text", // Default to 'text' if no type is passed
-  required = false, // Default to false
+  type = "text",
+  required = false,
+  error,
 }: FormSectionProps) => (
-  <div className="space-y-2">
+  <div className="space-y-1">
     <label className="font-semibold text-sm">{label}</label>
     <Input
-      className="mt-1"
+      className={`mt-1 ${error ? "border-red-500 focus-visible:ring-red-500" : ""}`}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      type={type} // Allow dynamic input types (e.g., email, password, etc.)
+      type={type}
       required={required}
     />
+    {error && <p className="text-sm text-red-500">{error}</p>}
   </div>
 );
 
