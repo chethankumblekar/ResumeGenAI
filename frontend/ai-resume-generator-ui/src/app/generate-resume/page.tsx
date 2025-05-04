@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import FormSection from "./components/farmsection";
@@ -35,56 +35,58 @@ export default function GenerateResumePage() {
   };
 
   return (
-    <Card>
-      <CardContent className="space-y-4 p-6">
-        <h1 className="text-2xl font-bold">Generate Resume</h1>
+      <Card className="w-full max-w-2xl shadow-xl">
+        <CardContent className="space-y-6 p-8">
+          <h1 className="text-2xl font-bold">Generate Resume</h1>
 
-        {/* Personal Information */}
-        <FormSection
-          label="Full Name"
-          placeholder="Enter Full Name"
-          value={form.fullName}
-          onChange={(value) => updateField('fullName', value)}
-        />
-        <FormSection
-          label="Email"
-          placeholder="Enter Email"
-          value={form.email}
-          onChange={(value) => updateField('email', value)}
-        />
-        <FormSection
-          label="Phone"
-          placeholder="Enter Phone Number"
-          value={form.phone}
-          onChange={(value) => updateField('phone', value)}
-        />
-        <FormSection
-          label="Professional Summary"
-          placeholder="Enter Summary"
-          value={form.summary}
-          onChange={(value) => updateField('summary', value)}
-        />
+          {/* Personal Information */}
+          <FormSection
+            label="Full Name"
+            placeholder="Enter Full Name"
+            value={form.fullName}
+            onChange={(value) => updateField('fullName', value)}
+          />
+          <FormSection
+            label="Email"
+            placeholder="Enter Email"
+            value={form.email}
+            onChange={(value) => updateField('email', value)}
+          />
+          <FormSection
+            label="Phone"
+            placeholder="Enter Phone Number"
+            value={form.phone}
+            onChange={(value) => updateField('phone', value)}
+          />
+          <FormSection
+            label="Professional Summary"
+            placeholder="Enter Summary"
+            value={form.summary}
+            onChange={(value) => updateField('summary', value)}
+          />
 
-        {/* Skills Section */}
-        <SkillsSection
-          skills={form.skills}
-          onUpdateSkills={(newSkills) => updateField('skills', newSkills)}
-        />
+          {/* Skills Section */}
+          <SkillsSection
+            skills={form.skills}
+            onUpdateSkills={(newSkills) => updateField('skills', newSkills)}
+          />
 
-        {/* Experience Section */}
-        <ExperienceSection
-          experiences={form.experiences}
-          onUpdateExperiences={(updatedExperiences) => updateField('experiences', updatedExperiences)}
-        />
+          {/* Experience Section */}
+          <ExperienceSection
+            experiences={form.experiences}
+            onUpdateExperiences={(updatedExperiences) => updateField('experiences', updatedExperiences)}
+          />
 
-        {/* Education Section */}
-        <EducationSection
-          educations={form.educations}
-          onUpdateEducations={(updatedEducations) => updateField('educations', updatedEducations)}
-        />
+          {/* Education Section */}
+          <EducationSection
+            educations={form.educations}
+            onUpdateEducations={(updatedEducations) => updateField('educations', updatedEducations)}
+          />
 
-        <Button onClick={handleSubmit} className="w-full">Generate Resume</Button>
-      </CardContent>
-    </Card>
+          <Button onClick={handleSubmit} className="w-full">
+            Generate Resume
+          </Button>
+        </CardContent>
+      </Card>
   );
 }
