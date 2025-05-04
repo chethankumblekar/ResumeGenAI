@@ -1,5 +1,5 @@
 # 🚀 AI Resume & Cover Letter Generator  
-**A Free & Open-Source AI-Powered Resume and Cover Letter Generator**  
+**AI-Powered Resume and Cover Letter Generator**  
 
 ## 🌟 Features  
 ✅ **AI Resume Builder** – Create **ATS-friendly** resumes effortlessly.  
@@ -12,11 +12,11 @@
 - **Frontend:** Next.js (React)  
 - **Backend:** .NET 8 Web API  
 - **AI Processing:** OpenAI API / Azure AI  
-- **Database:** PostgreSQL / MongoDB  
+- **Database:** Sql Server
 - **Hosting:** Vercel  
 
 ## 🚀 Getting Started  
 ### 🔧 Prerequisites  
 - Node.js & npm  
 - .NET 8 SDK  
-- PostgreSQL or MongoDB (optional for local setup)  
+- Sql Server
