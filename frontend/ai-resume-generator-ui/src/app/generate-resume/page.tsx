@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import FormSection from "./components/farmsection";
@@ -8,84 +7,95 @@ import SkillsSection from "./components/skillssection";
 import ExperienceSection from "./components/experiencesection";
 import EducationSection from "./components/educationsection";
 import { resumeService } from "@/lib/resumeservice";
-import type { ResumeForm } from "@/types/resume";
+import { useFormStore } from "@/store/farmstore";
+import { ToastMessages } from "@/constants/messages";
+import { toast } from 'sonner';
+import { useState } from "react";
+import LoadingIndicator from "@/components/shared/loader";
 
 export default function GenerateResumePage() {
-  const [form, setForm] = useState<ResumeForm>({
-    fullName: '',
-    email: '',
-    phone: '',
-    summary: '',
-    skills: [{ skillName: '' }],
-    experiences: [{ company: '', role: '', duration: '', description: '' }],
-    educations: [{ institution: '', degree: '', year: '', description: '' }],
-  });
 
-  const updateField = <K extends keyof ResumeForm>(field: K, value: ResumeForm[K]) => {
-    setForm(prev => ({ ...prev, [field]: value }));
-  };
+  const { form, updateField, validateForm, formErrors } = useFormStore();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    try {
-      const resumeData = await resumeService.generateResume(form);
-      console.log('Resume created:', resumeData);
-    } catch (error) {
-      console.error('Error generating resume:', error);
-    }
-  };
+  const isValid = validateForm();
+  if (!isValid) return;
+
+  try {
+    setLoading(true)
+    const resumeData = await resumeService.generateResume(form);
+    if(resumeData) toast.success(ToastMessages.resume.submitSuccess);
+  } catch (error) {
+    toast.error(ToastMessages.resume.submitError);
+    console.log(error);
+  }
+  finally {
+    setLoading(false);
+  }
+};
+
 
   return (
       <Card className="w-full max-w-2xl shadow-xl">
         <CardContent className="space-y-6 p-8">
           <h1 className="text-2xl font-bold">Generate Resume</h1>
 
-          {/* Personal Information */}
           <FormSection
             label="Full Name"
             placeholder="Enter Full Name"
             value={form.fullName}
             onChange={(value) => updateField('fullName', value)}
+            error={formErrors.fullName}
           />
+
           <FormSection
             label="Email"
             placeholder="Enter Email"
             value={form.email}
             onChange={(value) => updateField('email', value)}
+            error={formErrors.email}
           />
+        
           <FormSection
             label="Phone"
             placeholder="Enter Phone Number"
             value={form.phone}
-            onChange={(value) => updateField('phone', value)}
+          onChange={(value) => updateField('phone', value)}
+          error={formErrors.phone}
           />
           <FormSection
             label="Professional Summary"
             placeholder="Enter Summary"
             value={form.summary}
-            onChange={(value) => updateField('summary', value)}
+          onChange={(value) => updateField('summary', value)}
+          error={formErrors.summary}
           />
 
-          {/* Skills Section */}
           <SkillsSection
             skills={form.skills}
-            onUpdateSkills={(newSkills) => updateField('skills', newSkills)}
+            onUpdateSkills={(newSkills) => updateField("skills", newSkills)}
+            errors={formErrors.skills ? [formErrors.skills] : undefined}
           />
 
-          {/* Experience Section */}
+
           <ExperienceSection
             experiences={form.experiences}
-            onUpdateExperiences={(updatedExperiences) => updateField('experiences', updatedExperiences)}
+            onUpdateExperiences={(updated) => updateField("experiences", updated)}
+            errors={formErrors.experiences}
           />
 
-          {/* Education Section */}
+
           <EducationSection
             educations={form.educations}
             onUpdateEducations={(updatedEducations) => updateField('educations', updatedEducations)}
+            errors={formErrors.educations}
           />
 
           <Button onClick={handleSubmit} className="w-full">
             Generate Resume
-          </Button>
+        </Button>
+        <LoadingIndicator isLoading={loading} />
         </CardContent>
       </Card>
   );

@@ -7,12 +7,7 @@ interface CreateResumeResponse {
 
 export const resumeService = {
   async generateResume(form: ResumeForm): Promise<CreateResumeResponse> {
-    try {
       const response = await apiClient.post<CreateResumeResponse>('/api/resume/create', form);
       return response;
-    } catch (error) {
-      console.error('Error generating resume:', error);
-      throw new Error('Failed to generate resume.');
-    }
-  },
+  }
 };
