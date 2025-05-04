@@ -1,5 +1,5 @@
 # 🚀 AI Resume & Cover Letter Generator  
-**A Free & Open-Source AI-Powered Resume and Cover Letter Generator**  
+**AI-Powered Resume and Cover Letter Generator**  
 
 ## 🌟 Features  
 ✅ **AI Resume Builder** – Create **ATS-friendly** resumes effortlessly.  
