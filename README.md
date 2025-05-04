@@ -11,12 +11,12 @@
 ## 🛠 Tech Stack  
 - **Frontend:** Next.js (React)  
 - **Backend:** .NET 8 Web API  
-- **AI Processing:** OpenAI API / Azure AI  
-- **Database:** PostgreSQL / MongoDB  
+- **AI Processing:** OpenAI API
+- **Database:** Sql Server 
 - **Hosting:** Vercel  
 
 ## 🚀 Getting Started  
 ### 🔧 Prerequisites  
 - Node.js & npm  
 - .NET 8 SDK  
-- PostgreSQL or MongoDB (optional for local setup)  
+- Sql Server 
