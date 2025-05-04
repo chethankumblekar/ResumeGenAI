@@ -12,27 +12,21 @@ using ExperienceDto = AIResumeGenerator.Application.DTOs.ExperienceDto;
 
 namespace AIResumeGenerator.Infrastructure.Repositories
 {
-    public class ResumeRepository : IResumeRepository
+    public class ResumeRepository(IDbConnection dbConnection) : IResumeRepository
     {
-        private readonly IDbConnection _dbConnection;
-
-        public ResumeRepository(IDbConnection dbConnection)
-        {
-            _dbConnection = dbConnection;
-        }
-
         // Create Resume Method
         public async Task<Guid> CreateResumeAsync(CreateResumeCommand command)
         {
             var resumeId = Guid.NewGuid();
-            using var transaction = _dbConnection.BeginTransaction();
+            dbConnection.Open();
+            using var transaction = dbConnection.BeginTransaction();
 
             try
             {
                 var resumeSql = @"INSERT INTO Resumes (Id, FullName, Email, Phone, Summary)
                                   VALUES (@Id, @FullName, @Email, @Phone, @Summary);";
 
-                await _dbConnection.ExecuteAsync(resumeSql, new
+                await dbConnection.ExecuteAsync(resumeSql, new
                 {
                     Id = resumeId,
                     command.FullName,
@@ -54,6 +48,10 @@ namespace AIResumeGenerator.Infrastructure.Repositories
                 transaction.Rollback();
                 throw;
             }
+            finally
+            {
+                dbConnection.Close();
+            }
         }
 
         // Method to insert experiences
@@ -64,7 +62,7 @@ namespace AIResumeGenerator.Infrastructure.Repositories
 
             foreach (var exp in command.Experiences)
             {
-                await _dbConnection.ExecuteAsync(experienceSql, new
+                await dbConnection.ExecuteAsync(experienceSql, new
                 {
                     Id = Guid.NewGuid(),
                     ResumeId = resumeId,
@@ -84,7 +82,7 @@ namespace AIResumeGenerator.Infrastructure.Repositories
 
             foreach (var edu in command.Educations)
             {
-                await _dbConnection.ExecuteAsync(educationSql, new
+                await dbConnection.ExecuteAsync(educationSql, new
                 {
                     Id = Guid.NewGuid(),
                     ResumeId = resumeId,
@@ -104,7 +102,7 @@ namespace AIResumeGenerator.Infrastructure.Repositories
 
             foreach (var skill in command.Skills)
             {
-                await _dbConnection.ExecuteAsync(skillSql, new
+                await dbConnection.ExecuteAsync(skillSql, new
                 {
                     Id = Guid.NewGuid(),
                     ResumeId = resumeId,
@@ -126,7 +124,7 @@ namespace AIResumeGenerator.Infrastructure.Repositories
                           LEFT JOIN Skills s ON r.Id = s.ResumeId
                           WHERE r.Id = @Id";
 
-            var result = await _dbConnection.QueryAsync<ResumeDto, ExperienceDto, EducationDto, SkillDto, ResumeDto>(
+            var result = await dbConnection.QueryAsync<ResumeDto, ExperienceDto, EducationDto, SkillDto, ResumeDto>(
                 query,
                 (resume, experience, education, skill) =>
                 {

@@ -9,8 +9,8 @@ namespace AIResumeGenerator.WebApi.Controllers
     [Route("api/[controller]")]
     public class ResumeController(IMediator mediator) : ControllerBase
     {
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateResumeCommand command)
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody]CreateResumeCommand command)
         {
             var resumeId = await mediator.Send(command);
             return CreatedAtAction(nameof(GetResumeById), new { id = resumeId }, new { resumeId });
